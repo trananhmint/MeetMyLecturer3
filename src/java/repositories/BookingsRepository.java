@@ -31,7 +31,7 @@ public class BookingsRepository {
         //Tạo đối tượng statement
         Statement stm = con.createStatement();
         //Thực thi lệnh SELECT
-        ResultSet rs = stm.executeQuery("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        ResultSet rs = stm.executeQuery("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime, fs.endTime, fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID");
         list = new ArrayList<>();
         while (rs.next()) {
@@ -41,10 +41,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -57,7 +61,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where studentID = ?");
         stm.setString(1, studentID);
@@ -70,10 +74,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -85,7 +93,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where lecturerID = ?");
         stm.setString(1, lecturerID);
@@ -98,10 +106,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -113,7 +125,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where studentID = ?");
         stm.setString(1, studentID);
@@ -126,10 +138,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -141,7 +157,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where studentID = ? and lecturerID = ?");
         stm.setString(1, studentID);
@@ -155,10 +171,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -170,7 +190,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where subjectCode = ?");
         stm.setString(1, subjectCode);
@@ -183,10 +203,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -198,7 +222,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where subjectCode = ? and studentID = ?");
         stm.setString(1, subjectCode);
@@ -212,10 +236,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -227,7 +255,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where subjectCode = ? and lecturerID = ?");
         stm.setString(1, subjectCode);
@@ -241,10 +269,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -256,7 +288,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where lecturerID = ?");
         stm.setString(1, lecturerID);
@@ -269,10 +301,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -284,7 +320,7 @@ public class BookingsRepository {
 
         List<Bookings> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status,fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
+        PreparedStatement stm = con.prepareStatement("select b.ID, b.bookingID, b.studentID, b.freeSlotID, b.status, b.stuPresence, b.lecPresence, fs.startTime ,fs.endTime ,fs.subjectCode, fs.lecturerID\n"
                 + "from Bookings as b join FreeSlots as fs on b.freeSlotID = fs.freeSlotID\n"
                 + "where lecturerID = ? and studentID = ? ");
         stm.setString(1, lecturerID);
@@ -298,10 +334,14 @@ public class BookingsRepository {
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setStatus(rs.getBoolean("status"));
-            bookings.setStartTime(rs.getDate("startTime"));
-            bookings.setEndTime(rs.getDate("endTime"));
+            bookings.setStartTime(rs.getTimestamp("startTime"));
+            bookings.setEndTime(rs.getTimestamp("endTime"));
             bookings.setSubjectCode(rs.getString("subjectCode"));
             bookings.setLecturerID(rs.getString("lecturerID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
+            bookings.setPresenceTextOfStu(Services.getPresenceOfBookings(rs.getBoolean("stuPresence")));
+            bookings.setPresenceTextOfLec(Services.getPresenceOfBookings(rs.getBoolean("lecPresence")));
             bookings.setStatusText(Services.getStatusOfBookings(rs.getBoolean("status")));
             list.add(bookings);
         }
@@ -321,6 +361,8 @@ public class BookingsRepository {
             bookings.setBookingID(rs.getString("bookingID"));
             bookings.setStudentID(rs.getString("studentID"));
             bookings.setFreeSlotID(rs.getString("freeSlotID"));
+            bookings.setStuPresence(rs.getBoolean("stuPresence"));
+            bookings.setLecPresence(rs.getBoolean("lecPresence"));
             bookings.setStatus(rs.getBoolean("status"));
         }
         con.close();
@@ -329,23 +371,27 @@ public class BookingsRepository {
 
     public void create(Bookings bookings) throws SQLException {
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("insert into Bookings values(?, ?, ?)");
+        PreparedStatement stm = con.prepareStatement("insert into Bookings values(?, ?, ?, ?, ?)");
 //        stm.setString(1, bookings.getBookingID());
         stm.setString(1, bookings.getStudentID());
         stm.setString(2, bookings.getFreeSlotID());
         stm.setBoolean(3, bookings.isStatus());
+        stm.setBoolean(4, bookings.isStuPresence());
+        stm.setBoolean(5, bookings.isLecPresence());
         int count = stm.executeUpdate();
         con.close();
     }
 
     public void update(Bookings bookings) throws SQLException {
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("update Bookings set studentID = ?, freeSlotID = ?, status = ? where ID = ?");
+        PreparedStatement stm = con.prepareStatement("update Bookings set studentID = ?, freeSlotID = ?,  status = ?, stuPresence = ?, lecPresence = ? where ID = ?");
 //        stm.setString(1, bookings.getBookingID());
         stm.setString(1, bookings.getStudentID());
         stm.setString(2, bookings.getFreeSlotID());
         stm.setBoolean(3, bookings.isStatus());
-        stm.setInt(4, bookings.getID());
+        stm.setBoolean(4, bookings.isStuPresence());
+        stm.setBoolean(5, bookings.isLecPresence());
+        stm.setInt(6, bookings.getID());
         int count = stm.executeUpdate();
         con.close();
     }

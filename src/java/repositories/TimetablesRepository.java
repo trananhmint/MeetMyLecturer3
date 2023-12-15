@@ -44,6 +44,69 @@ public class TimetablesRepository {
 
     }
 
+    public List<Timetables> selectByLecturer(String lecturerID) throws SQLException {
+        List<Timetables> list = new ArrayList<>();
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement(
+                "select t.semesterID, t.lecturerID, t.slotID, s.starttime, s.endtime, s.day1, s.day2, t.subjectCode from Timetables as t\n"
+                + " left join Slots as s on t.slotID = s.slotID\n"
+                + "  where lecturerID = ?");
+
+        stm.setString(1, lecturerID);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            Timetables t = new Timetables();
+            t.setSemesterID(rs.getString("semesterID"));
+            t.setLecturerID(rs.getString("lecturerID"));
+            t.setSlotID(rs.getString("slotID"));
+            t.setStartTime(rs.getTime("starttime"));
+            t.setEndTime(rs.getTime("endtime"));
+            t.setDay1(rs.getString("day1"));
+            t.setDay2(rs.getString("day2"));
+            t.setSubjectCode(rs.getString("subjectCode"));
+            list.add(t);
+        }
+        con.close();
+        return list;
+    }
+
+    public List<Timetables> listByDate(String lecturerID, String day, String start, String end) throws SQLException {
+        List<Timetables> list = new ArrayList<>();
+        System.out.println(day);
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement(
+                "select t.semesterID, t.lecturerID, t.slotID, s.starttime, s.endtime, s.day1, s.day2, t.subjectCode\n"
+                + "from Timetables as t\n"
+                + "left join Slots as s on t.slotID = s.slotID\n"
+                + "where lecturerID = ? and (day1 = ? or day2 = ?)\n "
+                + "and ((? between starttime and endtime) or ( ? between starttime and endtime))");
+
+        stm.setString(1, lecturerID);
+        stm.setString(2, day);
+        stm.setString(3, day);
+        stm.setString(4, start);
+        stm.setString(5, end);
+        System.out.println(":))");
+        ResultSet rs = stm.executeQuery();
+        System.out.println("ou[pop");
+        while (rs.next()) {
+            Timetables t = new Timetables();
+            t.setLecturerID(rs.getString("lecturerID"));
+            t.setSlotID(rs.getString("slotID"));
+            t.setStartTime(rs.getTime("starttime"));
+            t.setEndTime(rs.getTime("endtime"));
+            t.setDay1(rs.getString("day1"));
+            t.setDay2(rs.getString("day2"));
+            t.setSubjectCode(rs.getString("subjectCode"));
+            System.out.println("weurweu");
+
+            list.add(t);
+        }
+        System.out.println(list.size());
+        con.close();
+        return list;
+    }
+
     public Timetables read(String subjectCode, String slotID, String lecturerID, String semesterID) throws SQLException {
         Timetables timetables = null;
         Connection con = DBContext.getConnection();
@@ -63,8 +126,8 @@ public class TimetablesRepository {
         con.close();
         return timetables;
     }
-    
-      public Timetables read1(String subjectCode) throws SQLException {
+
+    public Timetables read1(String subjectCode) throws SQLException {
         Timetables timetables = null;
         Connection con = DBContext.getConnection();
         PreparedStatement stm = con.prepareStatement("select * from Timetables where subjectCode = ?");

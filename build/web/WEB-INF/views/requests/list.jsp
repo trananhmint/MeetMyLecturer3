@@ -109,80 +109,91 @@
                     </a>
                 </div>-->
 
+        <c:choose>
+            <c:when test="${roleID.equals('1')}">
+                <div class="container mt-5">
+                    <h1>Admin: ${users.userName} | Semester: ${semseter} Fall23 ${date}</h1>
+                    <form action="<c:url value="/requests/search.do"/>">    
+                        <div class="row align-items-center">
+                            <div class="form-group">
+                                <input type="text" class="form-control " placeholder="Search student, lecturer or subject" name="ID">
+                            </div>
+                            <div class="form-group" >
+                                <select class="form-control" name="select">
+                                    <option value="subjectCode">Subject Code</option>
+                                    <option value="lecturer">Lecturer</option> 
+                                    <option value="student">Student</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="semester">
+                                    <option name="semester" value="SP22">SPRING2022</option>
+                                    <option name="semester" value="SU22">SUMMER2022</option> 
+                                    <option name="semester" value="FA22">FALL2022</option> 
+                                    <option name="semester" value="SP23">SPRING2023</option>
+                                    <option name="semester" value="SU23">SUMMER2023</option> 
+                                    <option name="semester" value="FA23">FALL2023</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary form-control" type="submit" name="select" value="${requestScope[select]}">Search</button>
+                            </div>
+                            <h5 style="color: red">${msg}</h5>
+                        </div>
 
-        <div class="container mt-5">
-            <h1>Admin: ${users.userName} | Semester: ${semseter} Fall23 ${date}</h1>
-            <form action="<c:url value="/requests/search.do"/>">    
-                <div class="row align-items-center">
-                    <div class="form-group">
-                        <input type="text" class="form-control " placeholder="Search student, lecturer or subject" name="ID">
-                    </div>
-                    <div class="form-group" >
-                        <select class="form-control" name="select">
-                            <option value="subjectCode">Subject Code</option>
-                            <option value="lecturer">Lecturer</option> 
-                            <option value="student">Student</option> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="semester">
-                            <option name="semester" value="SP22">SPRING2022</option>
-                            <option name="semester" value="SU22">SUMMER2022</option> 
-                            <option name="semester" value="FA22">FALL2022</option> 
-                            <option name="semester" value="SP23">SPRING2023</option>
-                            <option name="semester" value="SU23">SUMMER2023</option> 
-                            <option name="semester" value="FA23">FALL2023</option> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary form-control" type="submit" name="select" value="${requestScope[select]}">Search</button>
-                    </div>
-                    <h5 style="color: red">${msg}</h5>
+                        <div class="row justify-content-center mt-5">
+
+                            <table class="table text-center table-striped table-bordered">
+                                <thead class="thead-orange">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Subject Code</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Description</th>
+                                        <th>Student ID</th>
+                                        <th>Lecturer ID</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="requests" items="${list}" varStatus="loop">
+                                        <tr>
+                                            <td>${requests.ID}</td>
+                                            <!--<td>${requests.requestID}</td>-->
+                                            <td>${requests.subjectCode}</td>
+                                            <td>${requests.startTime}</td>
+                                            <td>${requests.endTime}</td>
+                                            <td>${requests.description}</td>
+                                            <td>${requests.studentID}</td>
+                                            <td>${requests.lecturerID}</td>
+                                            <c:if test="${requests.status==0}">
+                                                <td style="color: darkcyan; font-weight: 600">${requests.statusText}</td>
+                                            </c:if>
+                                            <c:if test="${requests.status==1}">
+                                                <td style="color: darkseagreen; font-weight: 600">${requests.statusText}</td>
+                                            </c:if>
+                                            <c:if test="${requests.status==2}">
+                                                <td style="color: crimson; font-weight: 600">${requests.statusText}</td>
+                                            </c:if>
+
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="Accept Decline Buttons">
+                                                    <a class="btn btn-success" href="<c:url value="/requests/update.do?ID=${requests.ID}" />"><i class="bi bi-pencil-square"></i> Update</a>
+                                                    <a class="btn btn-danger" href="<c:url value="/requests/delete.do?ID=${requests.ID}"/>"><i class="bi bi-trash3"></i>Delete</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                            <!--<a style=" width: 70px" class="btn btn-primary" href="<c:url value="/requests/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>-->
+                        </div>
+                    </form>
                 </div>
-
-                <div class="row justify-content-center mt-5">
-
-                    <table class="table text-center table-striped table-bordered">
-                        <thead class="thead-orange">
-                            <tr>
-                                <th>ID</th>
-                                <th>Subject Code</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Description</th>
-                                <th>Student ID</th>
-                                <th>Lecturer ID</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="requests" items="${list}" varStatus="loop">
-                                <tr>
-                                    <td>${requests.ID}</td>
-                                    <!--<td>${requests.requestID}</td>-->
-                                    <td>${requests.subjectCode}</td>
-                                    <td>${requests.startTime}</td>
-                                    <td>${requests.endTime}</td>
-                                    <td>${requests.description}</td>
-                                    <td>${requests.studentID}</td>
-                                    <td>${requests.lecturerID}</td>
-                                    <td>${requests.status}</td>
-
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Accept Decline Buttons">
-                                            <a class="btn btn-success" href="<c:url value="/requests/update.do?ID=${requests.ID}" />"><i class="bi bi-pencil-square"></i> Update</a>
-                                            <a class="btn btn-danger" href="<c:url value="/requests/delete.do?ID=${requests.ID}"/>"><i class="bi bi-trash3"></i>Delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                    <!--<a style=" width: 70px" class="btn btn-primary" href="<c:url value="/requests/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>-->
-                </div>
-            </form>
-        </div>
+            </c:when>
+        </c:choose>
         <!-- Thêm liên kết đến Bootstrap JS và jQuery -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-xV6VaRqI1z7MOJwz5Mz6f3GC6A5wA5CKh5uFfxn5g5crf7Sc6Pe4OdU8paHdFuI" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

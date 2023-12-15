@@ -21,10 +21,32 @@ public class Bookings {
     private String lecturerID;
     private Date startTime;
     private Date endTime;
+    private boolean stuPresence;
+    private boolean lecPresence;
     private String statusText;
-
+    private String presenceTextOfStu;
+    private String presenceTextOfLec;
     public Bookings() {
     }
+
+    public Bookings(int ID, String studentID, String freeSlotID, boolean status, boolean stuPresence, boolean lecPresence) {
+        this.ID = ID;
+        this.studentID = studentID;
+        this.freeSlotID = freeSlotID;
+        this.status = status;
+        this.stuPresence = stuPresence;
+        this.lecPresence = lecPresence;
+    }
+
+    public Bookings(String studentID, String freeSlotID, boolean status, boolean stuPresence, boolean lecPresence) {
+        this.studentID = studentID;
+        this.freeSlotID = freeSlotID;
+        this.status = status;
+        this.stuPresence = stuPresence;
+        this.lecPresence = lecPresence;
+    }
+    
+    
 
     public Bookings(String studentID, String freeSlotID, boolean status) {
         this.studentID = studentID;
@@ -163,9 +185,41 @@ public class Bookings {
     public void setStatusText(String statusText) {
         this.statusText = statusText;
     }
+
+    public boolean isStuPresence() {
+        return stuPresence;
+    }
+
+    public void setStuPresence(boolean stuPresence) {
+        this.stuPresence = stuPresence;
+    }
+
+    public boolean isLecPresence() {
+        return lecPresence;
+    }
+
+    public void setLecPresence(boolean lecPresence) {
+        this.lecPresence = lecPresence;
+    }
+
+    public String getPresenceTextOfStu() {
+        return presenceTextOfStu;
+    }
+
+    public void setPresenceTextOfStu(String presenceTextOfStu) {
+        this.presenceTextOfStu = presenceTextOfStu;
+    }
+
+    public String getPresenceTextOfLec() {
+        return presenceTextOfLec;
+    }
+
+    public void setPresenceTextOfLec(String presenceTextOfLec) {
+        this.presenceTextOfLec = presenceTextOfLec;
+    }
+
     
     
-    
-    
+
     
 }

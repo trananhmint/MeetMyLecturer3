@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Requests;
 import models.Users;
+import services.Services;
 
 /**
  *
@@ -37,13 +38,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -54,7 +56,7 @@ public class RequestsRepository {
 
         List<Requests> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select * from [dbo].[Requests] where studentID = ?");
+        PreparedStatement stm = con.prepareStatement("select * from [dbo].[Requests] where studentID = ? and (status=1 or status=0)");
         stm.setString(1, studentID);
         ResultSet rs = stm.executeQuery();
         list = new ArrayList<>();
@@ -62,13 +64,40 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
+            list.add(requests);
+        }
+        con.close();
+        return list;
+    }
+
+    public List<Requests> selectFromStudent1(String studentID) throws SQLException {
+
+        List<Requests> list = null;
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from [dbo].[Requests] where studentID = ? and status = 2");
+        stm.setString(1, studentID);
+        ResultSet rs = stm.executeQuery();
+        list = new ArrayList<>();
+        while (rs.next()) {
+            Requests requests = new Requests();
+            requests.setID(rs.getInt("ID"));
+            requests.setRequestID(rs.getString("requestID"));
+            requests.setStatus(rs.getInt("status"));
+            requests.setSubjectCode(rs.getString("subjectCode"));
+            requests.setStartTime(rs.getTimestamp("startTime"));
+            requests.setEndTime(rs.getTimestamp("endTime"));
+            requests.setDescription(rs.getString("description"));
+            requests.setStudentID(rs.getString("studentID"));
+            requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -87,13 +116,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -112,13 +142,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -138,13 +169,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -164,13 +196,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -191,13 +224,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -217,13 +251,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -243,13 +278,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -268,13 +304,14 @@ public class RequestsRepository {
             Requests requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
             list.add(requests);
         }
         con.close();
@@ -291,13 +328,14 @@ public class RequestsRepository {
             requests = new Requests();
             requests.setID(rs.getInt("ID"));
             requests.setRequestID(rs.getString("requestID"));
-            requests.setStatus(rs.getBoolean("status"));
+            requests.setStatus(rs.getInt("status"));
             requests.setSubjectCode(rs.getString("subjectCode"));
             requests.setStartTime(rs.getTimestamp("startTime"));
             requests.setEndTime(rs.getTimestamp("endTime"));
             requests.setDescription(rs.getString("description"));
             requests.setStudentID(rs.getString("studentID"));
             requests.setLecturerID(rs.getString("lecturerID"));
+            requests.setStatusText(Services.getStatusOfRequests(rs.getInt("status")));
         }
         con.close();
         return requests;
@@ -307,7 +345,7 @@ public class RequestsRepository {
         Connection con = DBContext.getConnection();
         PreparedStatement stm = con.prepareStatement("insert into Requests values(?, ?, ?, ?, ?, ?, ?)");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        stm.setBoolean(1, requests.isStatus());
+        stm.setInt(1, requests.getStatus());
         stm.setString(2, requests.getSubjectCode());
         stm.setString(3, sdf.format(requests.getStartTime()));
         stm.setString(4, sdf.format(requests.getEndTime()));
@@ -322,7 +360,7 @@ public class RequestsRepository {
         Connection con = DBContext.getConnection();
         PreparedStatement stm = con.prepareStatement("update Requests set status = ?, subjectCode = ?, description = ?, studentID = ?, lecturerID = ? where ID = ? ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        stm.setBoolean(1, requests.isStatus());
+        stm.setInt(1, requests.getStatus());
         stm.setString(2, requests.getSubjectCode());
 //        stm.setString(3, sdf.format(requests.getStartTime()));
 //        stm.setString(4, sdf.format(requests.getEndTime()));
@@ -338,7 +376,7 @@ public class RequestsRepository {
         Connection con = DBContext.getConnection();
         PreparedStatement stm = con.prepareStatement("update Requests set status = ? where ID = ? ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        stm.setBoolean(1, requests.isStatus());
+        stm.setInt(1, requests.getStatus());
 //        stm.setString(2, requests.getSubjectCode());
 //        stm.setString(3, sdf.format(requests.getStartTime()));
 //        stm.setString(4, sdf.format(requests.getEndTime()));

@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import models.Bookings;
 import models.Semesters;
 import repositories.BookingsRepository;
+import repositories.FreeSlotsRepository;
 import repositories.SemestersRepository;
 
 /**
@@ -107,6 +109,11 @@ public class BookingsController extends HttpServlet {
 
             case "create_handler": {
                 create_handler(request, response);
+                break;
+            }
+
+            case "create_handler1": {
+                create_handler1(request, response);
                 break;
             }
 
@@ -536,7 +543,9 @@ public class BookingsController extends HttpServlet {
                     String studentID = request.getParameter("studentID");
                     String freeSlotID = request.getParameter("freeSlotID");
                     Boolean status = Boolean.parseBoolean(request.getParameter("status"));
-                    Bookings bookings = new Bookings(studentID, freeSlotID, status);
+                    Boolean stuPresence = Boolean.parseBoolean(request.getParameter("stuPresence"));
+                    Boolean lecPresence = Boolean.parseBoolean(request.getParameter("lecPresence"));
+                    Bookings bookings = new Bookings(studentID, freeSlotID, status, stuPresence, lecPresence);
                     request.setAttribute("bookings", bookings);
                     br.create(bookings);
                     response.sendRedirect(request.getContextPath() + "/bookings/listOfStudent.do");
@@ -563,6 +572,44 @@ public class BookingsController extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/bookings/listOfStudent.do");
                 }
 
+                break;
+            }
+        }
+    }
+
+    protected void create_handler1(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        BookingsRepository br = new BookingsRepository();
+        FreeSlotsRepository fsr = new FreeSlotsRepository();
+        HttpSession session = request.getSession();
+        String op = request.getParameter("op");
+        switch (op) {
+            case "create": {
+                try {
+//                    Date startTime = services.Services.sdfDateTime.parse(request.getParameter("startTime"));
+                    Date startTime =(Date)session.getAttribute("startTime");
+                    String freeSlotID = fsr.read1(startTime);
+                    String bookingID = request.getParameter("bookingID");
+                    String studentID = request.getParameter("studentID");
+                    Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+                    Bookings bookings = new Bookings(bookingID, studentID, freeSlotID, status);
+                    request.setAttribute("bookings", bookings);
+                    request.setAttribute("message", "Booked successfully");
+                    br.create(bookings);
+                    request.setAttribute("message", "Booked failed");
+                    response.sendRedirect(request.getContextPath() + "/bookings/list.do");
+                } catch (Exception ex) {
+                    //Hiện lại create form để nhập lại dữ liệu
+                    ex.printStackTrace();//In thông báo chi tiết cho developer
+                    request.setAttribute("message", "Booked failed");
+                    request.setAttribute("action", "create");
+                    request.getRequestDispatcher("WEB-INF/layouts/main.jsp").forward(request, response);
+                }
+                break;
+            }
+
+            case "cancel": {
+                response.sendRedirect(request.getContextPath() + "/bookings/list.do");
                 break;
             }
         }
@@ -597,7 +644,9 @@ public class BookingsController extends HttpServlet {
                     String studentID = request.getParameter("studentID");
                     String freeSlotID = request.getParameter("freeSlotID");
                     Boolean status = Boolean.parseBoolean(request.getParameter("status"));
-                    Bookings bookings = new Bookings(ID, studentID, freeSlotID, status);
+                    Boolean stuPresence = Boolean.parseBoolean(request.getParameter("stuPresence"));
+                    Boolean lecPresence = Boolean.parseBoolean(request.getParameter("lecPresence"));
+                    Bookings bookings = new Bookings(ID, studentID, freeSlotID, status, stuPresence, lecPresence);
                     request.setAttribute("bookings", bookings);
                     br.update(bookings);
                     HttpSession session = request.getSession();
@@ -606,9 +655,11 @@ public class BookingsController extends HttpServlet {
                     if (roleID.equals("1")) {
                         response.sendRedirect(request.getContextPath() + "/bookings/list.do");
                     }
-
                     if (roleID.equals("2 ")) {
                         response.sendRedirect(request.getContextPath() + "/bookings/listOfLecturer.do");
+                    }
+                    if (roleID.equals("3 ")) {
+                        response.sendRedirect(request.getContextPath() + "/bookings/listOfStudent.do");
                     }
 //                    response.sendRedirect(request.getContextPath() + "/bookings/listOfLecturer.do");
                 } catch (Exception ex) {
@@ -623,10 +674,12 @@ public class BookingsController extends HttpServlet {
                 HttpSession session = request.getSession();
                 String roleID = (String) session.getAttribute("roleID");
                 System.out.println("Role ID: " + roleID);
+                if (roleID.equals("1")) {
+                    response.sendRedirect(request.getContextPath() + "/bookings/list.do");
+                }
                 if (roleID.equals("2 ")) {
                     response.sendRedirect(request.getContextPath() + "/bookings/listOfLecturer.do");
                 }
-
                 if (roleID.equals("3 ")) {
                     response.sendRedirect(request.getContextPath() + "/bookings/listOfStudent.do");
                 }

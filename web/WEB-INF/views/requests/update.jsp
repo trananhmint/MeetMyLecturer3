@@ -120,8 +120,8 @@
                 <div class="form-group">
                     <label for="status">Status:</label>
                     <select class="form-control" id="status" name="status" >
-                        <option value="true">Accepted</option>
-                        <option value="false">Declined</option> 
+                        <option value="1">Accepted</option>
+                        <option value="2">Declined</option> 
                     </select>
                 </div>
 

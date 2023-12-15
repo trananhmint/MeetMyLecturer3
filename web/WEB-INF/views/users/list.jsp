@@ -109,72 +109,75 @@
                     </a>
                 </div>-->
 
+        <c:choose>
+            <c:when test="${roleID.equals('1')}">
+                <div class="container mt-5">
+        <!--            <h1>Lecture: LamNN15${lecturename} | Semester: ${semseter} Fall23 ${date}</h1>
+                    <div class="row align-items-center">
+                        <div class="form-group">
+                            <input type="text" class="form-control " placeholder="Search name of lecture...">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Subject</option>
+                                <option>Shoes</option>
+                                <option>Clothing</option>
+                                <option>Accessories</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>Semester</option>
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>X-Large</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary form-control">Search</button>
+                        </div>
+                    </div>-->
 
-        <div class="container mt-5">
-<!--            <h1>Lecture: LamNN15${lecturename} | Semester: ${semseter} Fall23 ${date}</h1>
-            <div class="row align-items-center">
-                <div class="form-group">
-                    <input type="text" class="form-control " placeholder="Search name of lecture...">
-                </div>
-                <div class="form-group">
-                    <select class="form-control">
-                        <option>Subject</option>
-                        <option>Shoes</option>
-                        <option>Clothing</option>
-                        <option>Accessories</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control">
-                        <option>Semester</option>
-                        <option>Small</option>
-                        <option>Medium</option>
-                        <option>Large</option>
-                        <option>X-Large</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary form-control">Search</button>
-                </div>
-            </div>-->
+                    <div class="row justify-content-center mt-5">
 
-            <div class="row justify-content-center mt-5">
+                        <table class="table text-center table-striped table-bordered">
+                            <thead class="thead-orange">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Role Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="users" items="${list}" varStatus="loop">
+                                    <tr>
+                                        <td>${loop.count}</td>
+                                        <td>${users.userID}</td>
+                                        <td>${users.userName}</td>
+                                        <td>${users.userEmail}</td>
+                                        <td>${users.statusText}</td>
+                                        <td>${users.roleName}</td>
+                                        <td>
+                                            <div class="btn-group" role="group" aria-label="Accept Decline Buttons">
+                                                <a class="btn btn-success" href="<c:url value="/users/update.do?userID=${users.userID}" />"><i class="bi bi-pencil-square"></i> Update</a>
+                                                <a class="btn btn-danger" href="<c:url value="/users/delete.do?userID=${users.userID}" />"><i class="bi bi-trash3"></i>Delete</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <a style=" width: 70px" class="btn btn-primary" href="<c:url value="/users/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>
+                    </div>
 
-                <table class="table text-center table-striped table-bordered">
-                    <thead class="thead-orange">
-                        <tr>
-                            <th>No.</th>
-                            <th>User ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Role Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="users" items="${list}" varStatus="loop">
-                            <tr>
-                                <td>${loop.count}</td>
-                                <td>${users.userID}</td>
-                                <td>${users.userName}</td>
-                                <td>${users.userEmail}</td>
-                                <td>${users.statusText}</td>
-                                <td>${users.roleName}</td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Accept Decline Buttons">
-                                        <a class="btn btn-success" href="<c:url value="/users/update.do?userID=${users.userID}" />"><i class="bi bi-pencil-square"></i> Update</a>
-                                        <a class="btn btn-danger" href="<c:url value="/users/delete.do?userID=${users.userID}" />"><i class="bi bi-trash3"></i>Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-                <a style=" width: 70px" class="btn btn-primary" href="<c:url value="/users/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>
-            </div>
-
-        </div>
+                </div>
+            </c:when>
+        </c:choose>
         <!-- Thêm liên kết đến Bootstrap JS và jQuery -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-xV6VaRqI1z7MOJwz5Mz6f3GC6A5wA5CKh5uFfxn5g5crf7Sc6Pe4OdU8paHdFuI" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

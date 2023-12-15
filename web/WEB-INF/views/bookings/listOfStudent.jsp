@@ -99,71 +99,95 @@
                         <i class="fas fa-arrow-left"></i> Back
                     </a>
                 </div>-->
-        <div class="container mt-5">
-            <h1>Student:${users.userName} | Semester: ${semseter} Fall23 ${date}</h1>
-            <form action="<c:url value="/bookings/searchByStudent.do"/>">
-                <div class="row justify-content-center ">
-                    <div class="form-group">
-                        <input type="text" class="form-control " placeholder="Search lecturer or subject" name="ID">
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="select">
-                            <option name="select" value="subjectCode">Subject Code</option>
-                            <option  name="select" value="lecturer">Lecturer</option> 
-                            <!--<option  name="select" value="student">Student</option>--> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="semester">
-                            <option name="semester" value="SP22">SPRING2022</option>
-                            <option name="semester" value="SU22">SUMMER2022</option> 
-                            <option name="semester" value="FA22">FALL2022</option> 
-                            <option name="semester" value="SP23">SPRING2023</option>
-                            <option name="semester" value="SU23">SUMMER2023</option> 
-                            <option name="semester" value="FA23">FALL2023</option> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary form-control" type="submit" name="select" value="${requestScope[select]}">Search</button>
-                    </div>
-                    <h5 style="color: red">${msg}</h5>
+        <c:choose>
+            <c:when test="${roleID.equals('3 ')}">
+                <div class="container mt-5">
+                    <h1>Student:${users.userName} | Semester: ${semseter} Fall23 ${date}</h1>
+                    <form action="<c:url value="/bookings/searchByStudent.do"/>">
+                        <div class="row justify-content-center ">
+                            <div class="form-group">
+                                <input type="text" class="form-control " placeholder="Search lecturer or subject" name="ID">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="select">
+                                    <option name="select" value="subjectCode">Subject Code</option>
+                                    <option  name="select" value="lecturer">Lecturer</option> 
+                                    <!--<option  name="select" value="student">Student</option>--> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="semester">
+                                    <option name="semester" value="SP22">SPRING2022</option>
+                                    <option name="semester" value="SU22">SUMMER2022</option> 
+                                    <option name="semester" value="FA22">FALL2022</option> 
+                                    <option name="semester" value="SP23">SPRING2023</option>
+                                    <option name="semester" value="SU23">SUMMER2023</option> 
+                                    <option name="semester" value="FA23">FALL2023</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary form-control" type="submit" name="select" value="${requestScope[select]}">Search</button>
+                            </div>
+                            <h5 style="color: red">${msg}</h5>
 
-                </div>
-                <div class="row justify-content-center mt-5">
-                    <c:forEach var="bookings" items="${list}" varStatus="loop">
-                        <div class="col-md-4">
-                            <div class="card" style="width: 260px; height: 240px; border-radius: 5%; margin-bottom:10px ">
-                                <div class="card-body">
-                                    <!--<div class="d-flex justify-content-between"><strong>ID:</strong> <span class="ml-auto">${bookings.ID}</span></div>-->
-                                    <div class="d-flex justify-content-between"><strong>Booking ID:</strong> <span class="ml-auto">${bookings.bookingID}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Subject Code:</strong> <span class="ml-auto">${bookings.subjectCode}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Lecturer ID:</strong> <span class="ml-auto">${bookings.lecturerID}</span></div>
-                                    <!--<div class="d-flex justify-content-between"><strong>Student ID:</strong> <span class="ml-auto">${bookings.studentID}</span></div>-->
-                                    <div class="d-flex justify-content-between"><strong>Free Slots:</strong> <span class="ml-auto">${bookings.freeSlotID}</span></div>
-                                    <!--<div class="d-flex justify-content-between"><strong>Start Time:</strong> <span class="ml-auto">${bookings.startTime}</span></div>-->
-                                    <!--<div class="d-flex justify-content-between"><strong>End Time:</strong> <span class="ml-auto">${bookings.endTime}</span></div>-->
-                                    <div class="d-flex justify-content-between"><strong>Status:</strong> <span class="ml-auto">${bookings.statusText}</span></div>
-                                    <div class="d-flex justify-content-center btn-book">
-                                        <!-- Added d-flex justify-content-between to create a flex container -->
-                                        <!--<a class="btn btn-success" href="<c:url value="/bookings/update.do?ID=${bookings.ID}"/>"><i class="bi bi-pencil-square"></i> Update</a>-->
-                                        <a class="btn btn-danger" href="<c:url value="/bookings/delete.do?ID=${bookings.ID}"/>"><i class="bi bi-trash3"></i>Delete</a>
+                        </div>
+                        <div class="row justify-content-center mt-5">
+                            <c:forEach var="bookings" items="${list}" varStatus="loop">
+                                <div class="col-md-4">
+                                    <div class="card" style="width: 260px; height: 300px; border-radius: 5%; margin-bottom:10px ">
+                                        <div class="card-body">
+                                            <!--<div class="d-flex justify-content-between"><strong>ID:</strong> <span class="ml-auto">${bookings.ID}</span></div>-->
+                                            <div class="d-flex justify-content-between"><strong>Booking ID:</strong> <span class="ml-auto">${bookings.bookingID}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Subject Code:</strong> <span class="ml-auto">${bookings.subjectCode}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Lecturer ID:</strong> <span class="ml-auto">${bookings.lecturerID}</span></div>
+                                            <!--<div class="d-flex justify-content-between"><strong>Student ID:</strong> <span class="ml-auto">${bookings.studentID}</span></div>-->
+                                            <div class="d-flex justify-content-between"><strong>Free Slots:</strong> <span class="ml-auto">${bookings.freeSlotID}</span></div>
+                                                <c:if test="${bookings.presenceTextOfStu.equals('Attended')}">
+                                                <div class="d-flex justify-content-between"><strong>Student Presence:</strong> <span class="ml-auto" style="color: green">${bookings.presenceTextOfStu}</span></div>
+                                                </c:if>
+                                                <c:if test="${bookings.presenceTextOfStu.equals('Absent')}">
+                                                <div class="d-flex justify-content-between"><strong>Student Presence:</strong> <span class="ml-auto" style="color: crimson">${bookings.presenceTextOfStu}</span></div>
+                                                </c:if>
+
+                                            <c:if test="${bookings.presenceTextOfLec.equals('Attended')}">
+                                                <div class="d-flex justify-content-between"><strong>Lecturer Presence:</strong> <span class="ml-auto" style="color: green">${bookings.presenceTextOfLec}</span></div>
+                                                </c:if>
+                                                <c:if test="${bookings.presenceTextOfLec.equals('Absent')}">
+                                                <div class="d-flex justify-content-between"><strong>Lecturer Presence:</strong> <span class="ml-auto" style="color: crimson">${bookings.presenceTextOfLec}</span></div>
+                                                </c:if>
+                                            <!--<div class="d-flex justify-content-between"><strong>Start Time:</strong> <span class="ml-auto">${bookings.startTime}</span></div>-->
+                                            <!--<div class="d-flex justify-content-between"><strong>End Time:</strong> <span class="ml-auto">${bookings.endTime}</span></div>-->
+                                            <c:if test="${bookings.statusText.equals('Accepted')}">
+                                                <div class="d-flex justify-content-between"><strong>Status:</strong> <span class="ml-auto" style="color: green; font-weight:700">${bookings.statusText}</span></div>
+                                                </c:if>
+                                                <c:if test="${bookings.statusText.equals('Declined')}">
+                                                <div class="d-flex justify-content-between"><strong>Status:</strong> <span class="ml-auto" style="color: crimson; font-weight:700">${bookings.statusText}</span></div>
+                                                </c:if>     
+
+                                            <div class="d-flex justify-content-between btn-book">
+                                                <!-- Added d-flex justify-content-between to create a flex container -->
+                                                <a class="btn btn-success" href="<c:url value="/bookings/update.do?ID=${bookings.ID}"/>"><i class="bi bi-pencil-square"></i>Change</a>
+                                                <a class="btn btn-danger" href="<c:url value="/bookings/delete.do?ID=${bookings.ID}"/>"><i class="bi bi-trash3"></i>Delete</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </c:forEach>
+
                         </div>
-                    </c:forEach>
-
+                    </form> 
                 </div>
-            </form> 
-            <div class="row align-items-center">
-                <!--<a style=" width: 70px; float: right" class="btn btn-primary" href="<c:url value="/bookings/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>-->
-            </div>
+            </c:when>
+        </c:choose>
+        <div class="row align-items-center">
+            <!--<a style=" width: 70px; float: right" class="btn btn-primary" href="<c:url value="/bookings/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>-->
+        </div>
 
 
-            <!-- Thêm liên kết đến Bootstrap JS và jQuery -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-xV6VaRqI1z7MOJwz5Mz6f3GC6A5wA5CKh5uFfxn5g5crf7Sc6Pe4OdU8paHdFuI" crossorigin="anonymous"></script>
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Thêm liên kết đến Bootstrap JS và jQuery -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-xV6VaRqI1z7MOJwz5Mz6f3GC6A5wA5CKh5uFfxn5g5crf7Sc6Pe4OdU8paHdFuI" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>

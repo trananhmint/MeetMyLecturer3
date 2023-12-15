@@ -13,8 +13,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import models.Semesters;
+import services.Services;
 
 /**
  *
@@ -44,6 +46,25 @@ public class SemestersRepository {
         return list;
     }
 
+    public Semesters read1(Date now) throws SQLException {
+        Semesters semesters = null;
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from Semesters\n"
+                + "where ? between startDay and endDay ");
+        stm.setString(1, Services.sdfDateTime.format(now));
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            semesters = new Semesters();
+            semesters.setSemesterID(rs.getString("semesterID"));
+            semesters.setSemesterName(rs.getString("semesterName"));
+            semesters.setStartDay(rs.getTimestamp("startDay"));
+            semesters.setEndDay(rs.getTimestamp("endDay"));
+
+        }
+        con.close();
+        return semesters;
+    }
+
     public Semesters read(String semesterID) throws SQLException {
         Semesters semesters = null;
         Connection con = DBContext.getConnection();
@@ -56,7 +77,7 @@ public class SemestersRepository {
             semesters.setSemesterName(rs.getString("semesterName"));
             semesters.setStartDay(rs.getTimestamp("startDay"));
             semesters.setEndDay(rs.getTimestamp("endDay"));
-           
+
         }
         con.close();
         return semesters;

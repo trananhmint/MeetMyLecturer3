@@ -14,18 +14,34 @@ import java.util.Date;
 public class Requests {
     private int ID;
     private String requestID;
-    private boolean status;
+    private int status;
     private String subjectCode;
     private Date startTime;
     private Date endTime;
     private String description;
     private String studentID;
     private String lecturerID;
+    private String statusText;
 
     public Requests() {
     }
 
-    public Requests(int ID, boolean status, String subjectCode, String description, String studentID, String lecturerID) {
+    public Requests(int ID, String requestID, int status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID, String statusText) {
+        this.ID = ID;
+        this.requestID = requestID;
+        this.status = status;
+        this.subjectCode = subjectCode;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.description = description;
+        this.studentID = studentID;
+        this.lecturerID = lecturerID;
+        this.statusText = statusText;
+    }
+    
+    
+
+    public Requests(int ID, int status, String subjectCode, String description, String studentID, String lecturerID) {
         this.ID = ID;
         this.status = status;
         this.subjectCode = subjectCode;
@@ -33,10 +49,8 @@ public class Requests {
         this.studentID = studentID;
         this.lecturerID = lecturerID;
     }
-    
-    
 
-    public Requests(int ID, String requestID, boolean status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID) {
+    public Requests(int ID, String requestID, int status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID) {
         this.ID = ID;
         this.requestID = requestID;
         this.status = status;
@@ -48,7 +62,7 @@ public class Requests {
         this.lecturerID = lecturerID;
     }
 
-    public Requests(boolean status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID) {
+    public Requests(int status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID) {
         this.status = status;
         this.subjectCode = subjectCode;
         this.startTime = startTime;
@@ -58,7 +72,7 @@ public class Requests {
         this.lecturerID = lecturerID;
     }
 
-    public Requests(int ID, boolean status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID) {
+    public Requests(int ID, int status, String subjectCode, Date startTime, Date endTime, String description, String studentID, String lecturerID) {
         this.ID = ID;
         this.status = status;
         this.subjectCode = subjectCode;
@@ -68,11 +82,14 @@ public class Requests {
         this.studentID = studentID;
         this.lecturerID = lecturerID;
     }
+    
 
-    public Requests(int ID, boolean status) {
+
+    public Requests(int ID, int status) {
         this.ID = ID;
         this.status = status;
     }
+    
     
     
     
@@ -93,13 +110,15 @@ public class Requests {
         this.requestID = requestID;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
+
+
 
     public String getSubjectCode() {
         return subjectCode;
@@ -148,6 +167,16 @@ public class Requests {
     public void setLecturerID(String lecturerID) {
         this.lecturerID = lecturerID;
     }
+
+    public String getStatusText() {
+        return statusText;
+    }
+
+    public void setStatusText(String statusText) {
+        this.statusText = statusText;
+    }
+    
+    
 
     @Override
     public String toString() {

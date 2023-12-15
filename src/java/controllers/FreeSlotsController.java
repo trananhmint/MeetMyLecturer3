@@ -23,6 +23,7 @@ import models.Semesters;
 import repositories.FreeSlotsRepository;
 import repositories.SemestersRepository;
 import services.Services;
+import services.TimetablesService;
 
 /**
  *
@@ -120,6 +121,11 @@ public class FreeSlotsController extends HttpServlet {
 
             case "create_handler": {
                 create_handler(request, response);
+                break;
+            }
+
+            case "create_handler1": {
+                create_handler1(request, response);
                 break;
             }
 
@@ -292,7 +298,7 @@ public class FreeSlotsController extends HttpServlet {
 
     }
 
-     protected void searchByStudent(HttpServletRequest request, HttpServletResponse response)
+    protected void searchByStudent(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String op = request.getParameter("op");
         HttpSession session = request.getSession();
@@ -496,6 +502,54 @@ public class FreeSlotsController extends HttpServlet {
 
             case "cancel": {
                 response.sendRedirect(request.getContextPath() + "/freeSlots/listOfLecturer.do");
+                break;
+            }
+        }
+    }
+
+    protected void create_handler1(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        FreeSlotsRepository fsr = new FreeSlotsRepository();
+        TimetablesService ts = new TimetablesService();
+        HttpSession session = request.getSession();
+        
+        String op = request.getParameter("op");
+        switch (op) {
+            case "create": {
+                try {
+                    String subjectCode = request.getParameter("subjectCode");
+//                    Date day = Services.sdfDate.parse(request.getParameter("day"));
+//                    Date start = Services.sdfTime.parse(request.getParameter("start"));
+                    String day = request.getParameter("day");
+                    String start = request.getParameter("start");
+                    String startTime1 = day + " " + start;
+                    Date startTime = Services.sdfDateTime.parse(startTime1);
+//                    Date end = Services.sdfTime.parse(request.getParameter("end"));
+                    String end = request.getParameter("end");
+                    String endTime1 = day + " " + end;
+                    Date endTime = Services.sdfDateTime.parse(endTime1);
+                    String password = request.getParameter("password");
+                    int capacity = Integer.parseInt(request.getParameter("capacity"));
+                    String meetLink = request.getParameter("meetLink");
+                    int count = Integer.parseInt(request.getParameter("count"));
+                    String lecturerID = request.getParameter("lecturerID");
+                    String studentID = (String)session.getAttribute("studentID");
+                    FreeSlots freeSlots = new FreeSlots(subjectCode, startTime, endTime, password, capacity, meetLink, count, lecturerID);
+                    request.setAttribute("freeSlots", freeSlots);
+                    fsr.create(freeSlots);
+                    response.sendRedirect(request.getContextPath() + "/bookings/create_handler1.do?startTime=" + startTime);
+                } catch (Exception ex) {
+                    //Hiện lại create form để nhập lại dữ liệu
+                    ex.printStackTrace();//In thông báo chi tiết cho developer
+                    request.setAttribute("message", "Created fail");
+                    request.setAttribute("action", "create");
+                    request.getRequestDispatcher("WEB-INF/layouts/main.jsp").forward(request, response);
+                }
+                break;
+            }
+
+            case "cancel": {
+                response.sendRedirect(request.getContextPath() + "/freeSlots/list.do");
                 break;
             }
         }

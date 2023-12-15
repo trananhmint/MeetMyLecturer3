@@ -33,14 +33,47 @@ public class Services {
         return statusText;
     }
 
-    public static String getStatusOfBookings(boolean userStatus) {
+    public static String getStatusOfBookings(boolean status) {
         String statusText = null;
-        if (userStatus == true) {
+        if (status == true) {
             statusText = "Accepted";
         } else {
             statusText = "Declined";
         }
 
         return statusText;
+    }
+
+    public static String getStatusOfRequests(int status) {
+        String statusText = null;
+        switch (status) {
+            case 0: {
+                statusText = "In processing";
+                break;
+            }
+
+            case 1: {
+                statusText = "Accepted";
+                break;
+            }
+            case 2: {
+                statusText = "Declined";
+                break;
+            }
+        }
+
+        return statusText;
+    }
+
+    public static String getPresenceOfBookings(boolean presence) {
+        String presenceText = null;
+        if (presence == true) {
+            presenceText = "Attended";
+        }
+        if (presence == false) {
+            presenceText = "Absent";
+        }
+
+        return presenceText;
     }
 }

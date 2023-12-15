@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import static java.util.Calendar.DATE;
+import java.util.Date;
 import java.util.List;
 import models.FreeSlots;
 
@@ -26,7 +29,8 @@ public class FreeSlotsRepository {
         List<FreeSlots> list = null;
         Connection con = DBContext.getConnection();
         Statement stm = con.createStatement();
-        ResultSet rs = stm.executeQuery("select * from FreeSlots");
+        ResultSet rs = stm.executeQuery("select * from FreeSlots where fs.endTime >= GETDATE() \n"
+                + "order by fs.startTime desc");
         list = new ArrayList<>();
         while (rs.next()) {
             FreeSlots freeSlots = new FreeSlots();
@@ -57,7 +61,8 @@ public class FreeSlotsRepository {
                 + "   select freeSlotID, COUNT(freeSlotID) as 'booked'\n"
                 + "   from Bookings b\n"
                 + "   GROUP BY freeSlotID\n"
-                + ") b on f.freeSlotID = b.freeSlotID ");
+                + ") b on f.freeSlotID = b.freeSlotID where f.endTime >= GETDATE() \n"
+                + "order by f.startTime desc");
         list = new ArrayList<>();
         while (rs.next()) {
             FreeSlots freeSlots = new FreeSlots();
@@ -82,7 +87,8 @@ public class FreeSlotsRepository {
 
         List<FreeSlots> list = null;
         Connection con = DBContext.getConnection();
-        PreparedStatement stm = con.prepareStatement("select * from FreeSlots where lecturerID = ?");
+        PreparedStatement stm = con.prepareStatement("select * from FreeSlots where lecturerID = ? and fs.endTime >= GETDATE() \n"
+                + "order by fs.startTime desc");
         stm.setString(1, lecturerID);
         ResultSet rs = stm.executeQuery();
         list = new ArrayList<>();
@@ -114,7 +120,8 @@ public class FreeSlotsRepository {
                 + "   select freeSlotID, COUNT(freeSlotID) as 'booked'\n"
                 + "   from Bookings b\n"
                 + "   GROUP BY freeSlotID\n"
-                + ") b on f.freeSlotID = b.freeSlotID where lecturerID = ?");
+                + ") b on f.freeSlotID = b.freeSlotID where lecturerID = ? where f.endTime >= GETDATE() \n"
+                + "order by f.startTime desc");
         stm.setString(1, lecturerID);
         ResultSet rs = stm.executeQuery();
         list = new ArrayList<>();
@@ -147,7 +154,7 @@ public class FreeSlotsRepository {
                 + "   select freeSlotID, COUNT(freeSlotID) as 'booked'\n"
                 + "   from Bookings b\n"
                 + "   GROUP BY freeSlotID\n"
-                + ") b on f.freeSlotID = b.freeSlotID where lecturerID = ?");
+                + ") b on f.freeSlotID = b.freeSlotID where lecturerID = ? ");
         stm.setString(1, lecturerID);
         ResultSet rs = stm.executeQuery();
         list = new ArrayList<>();
@@ -156,8 +163,8 @@ public class FreeSlotsRepository {
             freeSlots.setID(rs.getInt("ID"));
             freeSlots.setFreeSlotID(rs.getString("freeSlotID"));
             freeSlots.setSubjectCode(rs.getString("subjectCode"));
-            freeSlots.setStartTime(rs.getDate("startTime"));
-            freeSlots.setEndTime(rs.getDate("endTime"));
+            freeSlots.setStartTime(rs.getTimestamp("startTime"));
+            freeSlots.setEndTime(rs.getTimestamp("endTime"));
             freeSlots.setPassword(rs.getString("password"));
             freeSlots.setCapacity(rs.getInt("capacity"));
             freeSlots.setMeetLink(rs.getString("meetLink"));
@@ -202,7 +209,6 @@ public class FreeSlotsRepository {
 //        con.close();
 //        return list;
 //    }
-
     public List<FreeSlots> searchBySubjectCode(String subjectCode) throws SQLException {
 
         List<FreeSlots> list = null;
@@ -222,8 +228,8 @@ public class FreeSlotsRepository {
             freeSlots.setID(rs.getInt("ID"));
             freeSlots.setFreeSlotID(rs.getString("freeSlotID"));
             freeSlots.setSubjectCode(rs.getString("subjectCode"));
-            freeSlots.setStartTime(rs.getDate("startTime"));
-            freeSlots.setEndTime(rs.getDate("endTime"));
+            freeSlots.setStartTime(rs.getTimestamp("startTime"));
+            freeSlots.setEndTime(rs.getTimestamp("endTime"));
             freeSlots.setPassword(rs.getString("password"));
             freeSlots.setCapacity(rs.getInt("capacity"));
             freeSlots.setMeetLink(rs.getString("meetLink"));
@@ -269,7 +275,6 @@ public class FreeSlotsRepository {
 //        con.close();
 //        return list;
 //    }
-
     public List<FreeSlots> searchBySubjectCode2(String subjectCode, String lecturerID) throws SQLException {
 
         List<FreeSlots> list = null;
@@ -290,14 +295,49 @@ public class FreeSlotsRepository {
             freeSlots.setID(rs.getInt("ID"));
             freeSlots.setFreeSlotID(rs.getString("freeSlotID"));
             freeSlots.setSubjectCode(rs.getString("subjectCode"));
-            freeSlots.setStartTime(rs.getDate("startTime"));
-            freeSlots.setEndTime(rs.getDate("endTime"));
+            freeSlots.setStartTime(rs.getTimestamp("startTime"));
+            freeSlots.setEndTime(rs.getTimestamp("endTime"));
             freeSlots.setPassword(rs.getString("password"));
             freeSlots.setCapacity(rs.getInt("capacity"));
             freeSlots.setMeetLink(rs.getString("meetLink"));
             freeSlots.setCount(rs.getInt("count"));
             freeSlots.setLecturerID(rs.getString("lecturerID"));
             freeSlots.setBooked(rs.getInt("booked"));
+            list.add(freeSlots);
+        }
+        con.close();
+        return list;
+    }
+
+    public List<FreeSlots> listByDate(Date startDate) throws SQLException {
+        List<FreeSlots> list = new ArrayList<>();
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement(
+                "select * \n"
+                + "from FreeSlots\n"
+                + "where Day(startTime) = ? and Month(startTime) = ? and Year(startTime) = ? \n"
+                + "Order by startTime asc");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+
+        stm.setInt(1, calendar.get(DATE));
+        stm.setInt(2, calendar.get(Calendar.MONTH));
+        stm.setInt(3, calendar.get(Calendar.YEAR));
+
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            FreeSlots freeSlots = new FreeSlots();
+            freeSlots.setID(rs.getInt("ID"));
+            freeSlots.setFreeSlotID(rs.getString("freeSlotID"));
+            freeSlots.setSubjectCode(rs.getString("subjectCode"));
+            freeSlots.setStartTime(rs.getTimestamp("startTime"));
+            freeSlots.setEndTime(rs.getTimestamp("endTime"));
+            freeSlots.setPassword(rs.getString("password"));
+            freeSlots.setCapacity(rs.getInt("capacity"));
+            freeSlots.setMeetLink(rs.getString("meetLink"));
+            freeSlots.setCount(rs.getInt("count"));
+            freeSlots.setLecturerID(rs.getString("lecturerID"));
             list.add(freeSlots);
         }
         con.close();
@@ -325,6 +365,51 @@ public class FreeSlotsRepository {
         }
         con.close();
         return freeSlots;
+    }
+    
+    public static String read1(Date startTime) throws SQLException {
+        FreeSlots f= null;
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from FreeSlots where startTime = ?");
+        stm.setString(1, services.Services.sdfDateTime.format(startTime));
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            f = new FreeSlots();
+            f.setFreeSlotID(rs.getString("freeSlotID"));
+        }
+        con.close();
+        return f.getFreeSlotID();
+    }
+
+    public boolean duplicateFreeSlot(Date startTime, Date endTime) throws SQLException {
+        Connection con = DBContext.getConnection();
+        List<FreeSlots> list = new ArrayList<>();
+        PreparedStatement stm = con.prepareStatement("select * \n"
+                + "from FreeSlots\n"
+                + "where ? between startTime and endTime");
+        stm.setString(1, services.Services.sdfDateTime.format(startTime));
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            FreeSlots freeSlots = new FreeSlots();
+            list.add(freeSlots);
+        }
+
+        stm = con.prepareStatement("select * \n"
+                + "from FreeSlots\n"
+                + "where ? between startTime and endTime");
+        stm.setString(1, services.Services.sdfDateTime.format(endTime));
+        rs = stm.executeQuery();
+        while (rs.next()) {
+            FreeSlots freeSlots = new FreeSlots();
+            list.add(freeSlots);
+        }
+
+        if (list.size() > 0) {
+            return false;
+        }
+        return true;
+
+//        return list.size() > 0;
     }
 
     public void create(FreeSlots freeSlots) throws SQLException {

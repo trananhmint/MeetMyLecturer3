@@ -128,27 +128,42 @@
                             </c:if>
                         </li>
 
+
+                        <li class="nav-item">
+                            <c:if test="${roleID.equals('2 ')}">
+                                <a class="cus nav-link" href="<c:url value="/uploadDownloadFile/index.do"/>"><i class="bi bi-file-earmark-plus"></i>Upload File </a>
+                            </c:if>
+                        </li>
+
+                        <li class="nav-item">
+                            <c:if test="${roleID.equals('1')}">
+                                <a class="cus nav-link" href="<c:url value="/timetables/list.do"/>"><i class="bi bi-file-earmark-plus"></i>Timetable </a>
+                            </c:if>
+                            <c:if test="${roleID.equals('2 ')}">
+                                <a class="cus nav-link" href="<c:url value="/timetables/listOfLecturer.do"/>"><i class="bi bi-file-earmark-plus"></i>Timetable </a>
+                            </c:if>
+                            <c:if test="${roleID.equals('3 ')}">
+                                <a class="cus nav-link" href="<c:url value="/timetables/listOfStudent.do"/>"><i class="bi bi-file-earmark-plus"></i>Timetable </a>
+                            </c:if>
+                        </li>
                         <li class="nav-item">
                             <a class="cus nav-link" href="<c:url value="/users/logout.do" />">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </li>
+
                         <li class="nav-item" id="user-icon">
                             <c:if test="${roleID.equals('1')}">
                                 <a class="nav-link text-black" href="<c:url value="/users/list.do"/>">
                                     <i class="fas fa-user"></i> Users
                                 </a>
                             </c:if>
-
                         </li>
+
+
                     </ul>
                 </div>
             </nav>
-            <div class="btn-group ml-5 mt-3">
-                <a href="https://www.example.com" class="btn btn-primary btn-sm fixed-bottom fixed-right mb-4 mr-4">
-                    <i class="fas fa-arrow-left"></i> Back
-                </a>
-            </div>
             <!--view-->
             <div class="row content">
                 <div class="col">

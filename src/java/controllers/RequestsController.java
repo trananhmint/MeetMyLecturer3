@@ -22,11 +22,13 @@ import models.Requests;
 import models.Roles;
 import models.Semesters;
 import models.Users;
+import repositories.FreeSlotsRepository;
 import repositories.RequestsRepository;
 import repositories.RolesRepository;
 import repositories.SemestersRepository;
 import repositories.UsersRepository;
 import services.Services;
+import services.TimetablesService;
 
 /**
  *
@@ -165,6 +167,12 @@ public class RequestsController extends HttpServlet {
                 list = listSearch;
             }
             request.setAttribute("list", list);
+
+            List<Requests> list1 = rf.selectFromStudent1(studentID);
+            if (listSearch != null && !listSearch.isEmpty()) {
+                list1 = listSearch;
+            }
+            request.setAttribute("list1", list1);
             request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -563,7 +571,7 @@ public class RequestsController extends HttpServlet {
         switch (op) {
             case "create": {
                 try {
-                    Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+                    int status = Integer.parseInt(request.getParameter("status"));
                     String subjectCode = request.getParameter("subjectCode");
                     String day = request.getParameter("day");
                     String start = request.getParameter("start");
@@ -656,28 +664,48 @@ public class RequestsController extends HttpServlet {
             throws ServletException, IOException {
         RequestsRepository rr = new RequestsRepository();
         String op = request.getParameter("op");
+        HttpSession session = request.getSession();
+        TimetablesService ts = new TimetablesService();
+        FreeSlotsRepository fsr = new FreeSlotsRepository();
         switch (op) {
             case "update":
                 try {
                     int ID = Integer.parseInt(request.getParameter("ID"));
-                    Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+                    int status = Integer.parseInt(request.getParameter("status"));
                     String subjectCode = request.getParameter("subjectCode");
-//                    String day = request.getParameter("day");
-//                    String start = request.getParameter("start");
-//                    String startTime1 = day + " " + start;
-//                    Date startTime = Services.sdfDateTime.parse(startTime1);
-//                    String end = request.getParameter("end");
-//                    String endTime1 = day + " " + end;
-//                    Date endTime = Services.sdfDateTime.parse(endTime1);
+                    String day = request.getParameter("day");
+                    String start = request.getParameter("start");
+                    String startTime1 = day + " " + start;
+                    Date startTime = Services.sdfDateTime.parse(startTime1);
+                    String end = request.getParameter("end");
+                    String endTime1 = day + " " + end;
+                    Date endTime = Services.sdfDateTime.parse(endTime1);
                     String description = request.getParameter("description");
                     String studentID = request.getParameter("studentID");
                     String lecturerID = request.getParameter("lecturerID");
-
+                    session.setAttribute("studentID", studentID);
+                    session.setAttribute("startTime", startTime);
                     Requests requests = new Requests(ID, status, subjectCode, description, studentID, lecturerID);
                     request.setAttribute("requests", requests);
+//                    if (status == 1) {
+//                        if (ts.duplicateSlot(requests)) {
+//                            if (fsr.duplicateFreeSlot(startTime, endTime)) {
+//                                rr.update(requests);
+//                                request.getRequestDispatcher("/freeSlots/create_handler1.do?subjectCode=" + subjectCode
+//                                        + "&startTime=" + startTime + "&endTime=" + endTime
+//                                        + "&capacity=1&meetLink= &count=1&lecturerID=" + lecturerID + "&op=create").forward(request, response);
+//                            } else {
+//                                request.setAttribute("message", "Another meeting will be occrured at that time");
+//                            }
+//
+//                        } else {
+//                            request.setAttribute("message", "Your lecturer will be busy at that time");
+//                        }
+//                    } else {
+//                        rr.update(requests);
+//                    }
                     rr.update(requests);
                     System.out.println("Mint Mint");
-                    HttpSession session = request.getSession();
                     String roleID = (String) session.getAttribute("roleID");
                     if (roleID.equals("1")) {
                         response.sendRedirect(request.getContextPath() + "/requests/list.do");
@@ -698,7 +726,6 @@ public class RequestsController extends HttpServlet {
                 }
                 break;
             case "cancel":
-                HttpSession session = request.getSession();
                 String roleID = (String) session.getAttribute("roleID");
                 if (roleID.equals("1")) {
                     response.sendRedirect(request.getContextPath() + "/requests/list.do");
@@ -720,7 +747,7 @@ public class RequestsController extends HttpServlet {
             case "update":
                 try {
                     int ID = Integer.parseInt(request.getParameter("ID"));
-                    Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+                    int status = Integer.parseInt(request.getParameter("status"));
 //                    String subjectCode = request.getParameter("subjectCode");
 //                    String day = request.getParameter("day");
 //                    String start = request.getParameter("start");

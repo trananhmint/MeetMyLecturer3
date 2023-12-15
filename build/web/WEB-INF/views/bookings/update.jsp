@@ -65,7 +65,7 @@
         </style>
     </head>
     <body >
-        <h2 style="display: flex; justify-content: center">Booking Update</h2>
+        <h2 style="display: flex; justify-content: center">Changing Booking</h2>
         <div class="container mt-5">
             <form action="<c:url value="/bookings/update_handler.do"/>">
                 <div class="form-group">
@@ -91,13 +91,103 @@
                     <input disabled type="text" class="form-control" id="freeSlotID" value="${bookings.freeSlotID}">
                     <input type="hidden" name="freeSlotID" value="${bookings.freeSlotID}">
                 </div>
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <select class="form-control" id="status" name="status" value="${bookings.status}">
-                        <option value="true">Accepted</option>
-                        <option value="false">Declined</option> 
-                    </select>
-                </div>
+                <c:choose>
+                    <c:when test="${roleID.equals('1')}">
+                        <div class="form-group">
+                            <label for="stuPresence">Student Presence:</label>
+                            <select class="form-control" id="stuPresence" name="stuPresence" value="${bookings.stuPresence}">
+                                <option value="true">Attended</option>
+                                <option value="false">Absent</option> 
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lecPresence">Lecturer Presence:</label>
+                            <select class="form-control" id="lecPresence" name="lecPresence" value="${bookings.lecPresence}">
+                                <option value="true">Attended</option>
+                                <option value="false">Absent</option> 
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select class="form-control" id="status" name="status" value="${bookings.status}">
+                                <option value="true">Accepted</option>
+                                <option value="false">Declined</option> 
+                            </select>
+                        </div>
+                    </c:when>
+
+                    <c:when test="${roleID.equals('2 ')}">
+                        <div class="form-group">
+                            <label for="stuPresence">Student Presence:</label>
+                            <select class="form-control" id="stuPresence" name="stuPresence" value="${bookings.stuPresence}">
+                                <option value="true">Attended</option>
+                                <option value="false">Absent</option> 
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lecPresence">Lecturer Presence:</label>
+                            <select class="form-control" id="lecPresence" name="lecPresence" value="${bookings.lecPresence}">
+                                <c:if test="${bookings.lecPresence==true}">
+                                    <option value="true">Attended</option>
+                                </c:if>
+                                <c:if test="${bookings.lecPresence==false}">
+                                    <option value="false">Absent</option>
+                                </c:if>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select class="form-control" id="status" name="status" value="${bookings.status}">
+                                <c:if test="${bookings.status==true}">
+                                    <option value="true">Accepted</option>
+                                </c:if>
+
+                                <c:if test="${bookings.status==false}">
+                                    <option value="false">Declined</option> 
+                                </c:if>s
+                            </select>
+                        </div>
+
+                    </c:when> 
+
+                    <c:when test="${roleID.equals('3 ')}">
+                        <div class="form-group">
+                            <label for="lecPresence">Lecturer Presence:</label>
+                            <select class="form-control" id="lecPresence" name="lecPresence" value="${bookings.lecPresence}">
+                                <option value="true">Attended</option>
+                                <option value="false">Absent</option> 
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stuPresence">Student Presence:</label>
+                            <select class="form-control" id="stuPresence" name="stuPresence" value="${bookings.stuPresence}">
+                                <c:if test="${bookings.stuPresence==true}">
+                                    <option value="true">Attended</option>
+                                </c:if>
+                                <c:if test="${bookings.stuPresence==false}">
+                                    <option value="false">Absent</option>
+                                </c:if>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select class="form-control" id="status" name="status" value="${bookings.status}">
+                                <c:if test="${bookings.status==true}">
+                                    <option value="true">Accepted</option>
+                                </c:if>
+
+                                <c:if test="${bookings.status==false}">
+                                    <option value="false">Declined</option> 
+                                </c:if>s
+                            </select>
+                        </div>
+                    </c:when>
+                </c:choose>
+
+
+
 
                 <button type="submit" class="btn btn-success" name="op" value="update">Update</button>
                 <button type="submit" class="btn btn-outline-danger" name="op" value="cancel">Cancel</button>

@@ -164,8 +164,7 @@
                     <label for="status" class="col-md-2 col-form-label"><strong>Status:</strong></label>
                     <div class="col-md-10">
                         <select class="form-control" id="status" name="status">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option> 
+                            <option value="0">In processing</option>
                         </select>
                     </div>
                 </div>

@@ -95,68 +95,71 @@
                         </ul>
                     </div>
                 </nav>-->
+        <c:choose>
+            <c:when test="${roleID.equals('2 ')}">
+                <div class="container mt-5">
+                    <h1>Lecturer:${users.userName} | Semester: ${semseter} Fall23 ${date}</h1>
+                    <form action="<c:url value="/freeSlots/searchByLecturer.do"/>">
+                        <div class="row align-items-center ">
+                            <div class="form-group">
+                                <input type="text" class="form-control " placeholder="Search lecturer or subject" name="ID">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="select">
+                                    <option name="select" value="subjectCode">Subject Code</option>
+                                    <!--<option  name="select" value="lecturer">Lecturer</option>--> 
+                                    <!--<option  name="select" value="student">Student</option>--> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="semester">
+                                    <option name="semester" value="SP22">SPRING2022</option>
+                                    <option name="semester" value="SU22">SUMMER2022</option> 
+                                    <option name="semester" value="FA22">FALL2022</option> 
+                                    <option name="semester" value="SP23">SPRING2023</option>
+                                    <option name="semester" value="SU23">SUMMER2023</option> 
+                                    <option name="semester" value="FA23">FALL2023</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary form-control" type="submit" name="select" value="${requestScope[select]}">Search</button>
+                            </div>
+                            <h5 style="color: red">${msg}</h5>
 
-        <div class="container mt-5">
-            <h1>Lecturer:${users.userName} | Semester: ${semseter} Fall23 ${date}</h1>
-            <form action="<c:url value="/freeSlots/searchByLecturer.do"/>">
-                <div class="row align-items-center ">
-                    <div class="form-group">
-                        <input type="text" class="form-control " placeholder="Search lecturer or subject" name="ID">
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="select">
-                            <option name="select" value="subjectCode">Subject Code</option>
-                            <!--<option  name="select" value="lecturer">Lecturer</option>--> 
-                            <!--<option  name="select" value="student">Student</option>--> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="semester">
-                            <option name="semester" value="SP22">SPRING2022</option>
-                            <option name="semester" value="SU22">SUMMER2022</option> 
-                            <option name="semester" value="FA22">FALL2022</option> 
-                            <option name="semester" value="SP23">SPRING2023</option>
-                            <option name="semester" value="SU23">SUMMER2023</option> 
-                            <option name="semester" value="FA23">FALL2023</option> 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary form-control" type="submit" name="select" value="${requestScope[select]}">Search</button>
-                    </div>
-                    <h5 style="color: red">${msg}</h5>
+                        </div>
+                        <div class="row justify-content-center mt-5">
+                            <c:forEach var="freeSlots" items="${list}" varStatus="loop">
+                                <div class="col-md-4">
+                                    <div class="card" style="width: 370px; height: 350px; border-radius: 5%; margin-bottom:10px">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between"><strong>Free Slot ID:</strong> <span class="ml-auto">${freeSlots.freeSlotID}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Subject Code:</strong> <span class="ml-auto">${freeSlots.subjectCode}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Lecturer ID:</strong> <span class="ml-auto">${freeSlots.lecturerID}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Start Time:</strong> <span class="ml-auto">${freeSlots.startTime}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>End Time:</strong> <span class="ml-auto">${freeSlots.endTime}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Password:</strong> <span class="ml-auto">${freeSlots.password}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Capacity:</strong> <span class="ml-auto">${freeSlots.booked}/${freeSlots.capacity}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Meet Link:</strong> <span class="ml-auto">${freeSlots.meetLink}</span></div>
+                                            <div class="d-flex justify-content-between"><strong>Count:</strong> <span class="ml-auto">${freeSlots.count}</span></div>
 
-                </div>
-                <div class="row justify-content-center mt-5">
-                    <c:forEach var="freeSlots" items="${list}" varStatus="loop">
-                        <div class="col-md-4">
-                            <div class="card" style="width: 370px; height: 350px; border-radius: 5%; margin-bottom:10px">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between"><strong>Free Slot ID:</strong> <span class="ml-auto">${freeSlots.freeSlotID}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Subject Code:</strong> <span class="ml-auto">${freeSlots.subjectCode}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Lecturer ID:</strong> <span class="ml-auto">${freeSlots.lecturerID}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Start Time:</strong> <span class="ml-auto">${freeSlots.startTime}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>End Time:</strong> <span class="ml-auto">${freeSlots.endTime}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Password:</strong> <span class="ml-auto">${freeSlots.password}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Capacity:</strong> <span class="ml-auto">${freeSlots.booked}/${freeSlots.capacity}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Meet Link:</strong> <span class="ml-auto">${freeSlots.meetLink}</span></div>
-                                    <div class="d-flex justify-content-between"><strong>Count:</strong> <span class="ml-auto">${freeSlots.count}</span></div>
-
-                                    <div class="d-flex justify-content-between btn-book">
-                                        <!-- Added d-flex justify-content-between to create a flex container -->
-                                        <!--<a href="#" class="btn btn-primary">BOOK</a>-->
-                                        <a class="btn btn-success" href="<c:url value="/freeSlots/updateByLecturer.do?ID=${freeSlots.ID}" />"><i class="bi bi-pencil-square"></i> Update</a>
-                                        <a  class="btn btn-danger" href="<c:url value="/freeSlots/delete.do?ID=${freeSlots.ID}" />"><i class="bi bi-trash3"></i>Delete</a>
+                                            <div class="d-flex justify-content-between btn-book">
+                                                <!-- Added d-flex justify-content-between to create a flex container -->
+                                                <!--<a href="#" class="btn btn-primary">BOOK</a>-->
+                                                <a class="btn btn-success" href="<c:url value="/freeSlots/updateByLecturer.do?ID=${freeSlots.ID}" />"><i class="bi bi-pencil-square"></i> Update</a>
+                                                <a  class="btn btn-danger" href="<c:url value="/freeSlots/delete.do?ID=${freeSlots.ID}" />"><i class="bi bi-trash3"></i>Delete</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </c:forEach>
                         </div>
-                    </c:forEach>
+                    </form>
+                    <div class="row align-items-center">
+                        <a style=" width: 70px; float: right" class="btn btn-primary" href="<c:url value="/freeSlots/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>
+                    </div>
                 </div>
-            </form>
-            <div class="row align-items-center">
-                <a style=" width: 70px; float: right" class="btn btn-primary" href="<c:url value="/freeSlots/create.do"/>"><i class="fa-solid fa-circle-plus"></i></a>
-            </div>
-        </div>
+            </c:when>
+        </c:choose>
         <!-- Thêm liên kết đến Bootstrap JS và jQuery -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-xV6VaRqI1z7MOJwz5Mz6f3GC6A5wA5CKh5uFfxn5g5crf7Sc6Pe4OdU8paHdFuI" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

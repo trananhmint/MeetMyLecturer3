@@ -46,6 +46,23 @@ public class SlotsRepository {
 
     }
 
+    public Slots read1(String slotID) throws SQLException {
+        Slots slots = null;
+        Connection con = DBContext.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from Slots where slotID = ? ");
+        stm.setString(1, slotID);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            slots = new Slots();
+            slots.setSlotID(rs.getString("slotID"));
+            slots.setDay1(rs.getString("day1"));
+            slots.setDay2(rs.getString("day2"));
+            slots.setStartTime(rs.getTime("starttime"));
+            slots.setEndTime(rs.getTime("endtime"));
+        }
+        con.close();
+        return slots;
+    }
     public Slots read(String slotID) throws SQLException {
         Slots slots = null;
         Connection con = DBContext.getConnection();
